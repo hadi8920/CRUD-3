@@ -58,12 +58,16 @@ async function createTask(req, res) {
 
 async function getAllTask(req, res) {
   try {
-    const priority = req.query.priority
+    const {priority , sort , order} = req.query
+    const sortObj = {}
     const filter = {}
+    if(sort){
+      sortObj[sort] = order === 'desc' ? -1 : 1
+    }
     if(priority){
         filter.priority = priority
     }
-    const taskData = await taskModel.find(filter);
+    const taskData = await taskModel.find(filter).sort(sortObj);
 
     if (!taskData) {
       return res.status(400).json({
