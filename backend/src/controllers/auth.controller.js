@@ -7,15 +7,11 @@ async function registerUser(req, res){
 
     const {username , email , password} = req.body
     if(!username || !email || !password){
-        return res.status(400).json({
-            error : "Username  , email and password are required "
-        })
+        throw new Error("Username  , email and password are required ")
     }
-    const isUserExists = await userModel.findOne({$or:[{username: username},{email : email}]})
+    const isUserExists = await userModel.findOne({email : email})
     if(isUserExists){
-        return res.status(400).json({
-            error: "username and email should be unique"
-        })
+        throw new Error("Username and email should be unique")
     }
 
     const hashedPassword = await bcrypt.hash(password , 10)
@@ -30,46 +26,38 @@ async function registerUser(req, res){
         id:user._id
     } , process.env.JWT_SECRET)
 
-    res.cookie("token", token , {
-        httpOnly : true
-    })
-
     res.status(200).json({
         message : "User Register succesfully",
+        data : user,
+        token
     })
 }
 
 async function loginUser(req, res){
     const {username , email , password} = req.body
-    if((!username && !email) || !password){
-        return res.status(400).json({
-            error : "Username  , Email and password are required"
-        })
+    if(!email || !password){
+        throw new Error("Email and password are required")
     }
 
-    const user = await userModel.findOne({$or:[{username : username}, {email : email}]})
+    const user = await userModel.findOne({email : email})
 
     if(!user){
-        return res.status(404).json({
-            error : "User does not exists"
-        })
+        throw new Error("Email or password is incorrect")
     }
 
     const isPasswordValid = await bcrypt.compare(password , user.password)
 
     if(!isPasswordValid){
-        return res.status(404).json({
-            error : "Unauthorized Password"
-        })
+        throw new Error("Incorrect Password")
     }
     const token = jwt.sign({
         id: user._id
     } , process.env.JWT_SECRET)
 
-    res.cookie("token" , token)
-
     res.status(200).json({
-        message : "Logged in successfully"
+        message : "Logged in successfully",
+        data : user,
+        token
     })
 
 }
