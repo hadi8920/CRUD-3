@@ -10,6 +10,17 @@ import {
 } from "@/components/ui/alert"
 import { InfoIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+
 
 
 
@@ -46,15 +57,15 @@ const Tasks = () => {
         router.push("/dashboard");
     };
     const handlelogOut = () => {
-          localStorage.removeItem("token")
-          router.replace("/login")
-        }
-        const toTask = () => {
-          router.replace('/tasks')
-        }
-        const toCreateTask = () => {
-          router.replace('/tasks/add')
-        }
+        localStorage.removeItem("token")
+        router.replace("/login")
+    }
+    const toTask = () => {
+        router.replace('/tasks')
+    }
+    const toCreateTask = () => {
+        router.replace('/tasks/add')
+    }
     return (
         <div>
             {error &&
@@ -67,7 +78,7 @@ const Tasks = () => {
                     <AlertAction>
                     </AlertAction>
                 </Alert>}
-            <div className=' rounded flex flex-row justify-between bg-black text-white'>
+            {/* <div className=' rounded flex flex-row justify-between bg-black text-white'>
                                         <Button onClick={toDashboard} className='pt-0.5 pl-1'>Dashboard</Button>
                                           <div>
                                             <Button onClick={toTask} >All Tasks</Button>
@@ -75,29 +86,29 @@ const Tasks = () => {
                                           <Button onClick={handlelogOut}>Logout</Button>
                                           </div>
                                     
-                                        </div>
-            <h1>All tasks</h1>
-            <div>
-                {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    tasks.map((task: any) => (
-                        <div key={task._id}>
-                            <p>{task.title}</p>
-                            <p>{task.description}</p>
-                            <p>{task.status}</p>
-                            <p>{task.priority}</p>
-                            <Button onClick={() => {
-                                toUpdate(task._id)
-                            }}>Update Task</Button>
-                            <Button onClick={async () => {
-                                await deleteTask(task._id)
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                setTasks(tasks.filter((s: any) => s._id !== task._id))
-                            }}>Delete Task</Button>
-                        </div>
-                    ))
-                }
-            </div>
+                                        </div> */}
+                    <h1>All Tasks</h1>
+            <Table>
+                
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-[100px]">Title</TableHead>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Priority</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {tasks.map((task: any) => (
+                        <TableRow key={task._id}>
+                            <TableCell className="font-medium">{task.title}</TableCell>
+                            <TableCell>{task.description}</TableCell>
+                            <TableCell>{task.status}</TableCell>
+                            <TableCell className="text-right">{task.priority}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
         </div>
     )
 }

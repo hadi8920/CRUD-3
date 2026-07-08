@@ -74,7 +74,7 @@ const CreateTasks = () => {
 
     return (
         <div>
-            <div className=' rounded flex flex-row justify-between bg-black text-white'>
+            {/* <div className=' rounded flex flex-row justify-between bg-black text-white'>
                             <Button onClick={toDashboard} className='pt-0.5 pl-1'>Dashboard</Button>
                               <div>
                                 <Button onClick={toTask} >All Tasks</Button>
@@ -82,7 +82,7 @@ const CreateTasks = () => {
                               <Button onClick={handlelogOut}>Logout</Button>
                               </div>
                         
-                            </div>
+                            </div> */}
                
                 {error &&
                     <Alert>
@@ -97,7 +97,7 @@ const CreateTasks = () => {
 
                     <Card className="w-full max-w-sm">
                 <CardHeader>
-                    <CardTitle>Login to your account</CardTitle>
+                    <CardTitle>Create Task</CardTitle>
                     <CardDescription>
                         Create your task
                     </CardDescription>
@@ -154,7 +154,7 @@ const CreateTasks = () => {
                 <CardFooter className="flex-col gap-2">
                     {loader && <Loading />}
                     <Button onClick = {handleSubmit} disabled={loader} type="submit" className="w-full">
-                        Login
+                        Create Task
                     </Button>
                 </CardFooter>
             </Card>

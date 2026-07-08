@@ -125,7 +125,7 @@ const ResgiterUser = () => {
                 <CardFooter className="flex-col gap-2">
                     {loader && <Loading />}
                     <Button onClick={handleSubmit} disabled={loader} type="submit" className="w-full">
-                        Login
+                        Register
                     </Button>
                 </CardFooter>
             </Card>

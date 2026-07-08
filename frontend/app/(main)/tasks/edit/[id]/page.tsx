@@ -52,7 +52,7 @@ const Updatetask = () => {
 
     fetchBook()
 
-  })
+  },[])
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
@@ -87,7 +87,7 @@ const Updatetask = () => {
 
   return (
     <div>
-      <div className=' rounded flex flex-row justify-between bg-black text-white'>
+      {/* <div className=' rounded flex flex-row justify-between bg-black text-white'>
                                   <Button onClick={toDashboard} className='pt-0.5 pl-1'>Dashboard</Button>
                                     <div>
                                       <Button onClick={toTask} >All Tasks</Button>
@@ -95,13 +95,23 @@ const Updatetask = () => {
                                     <Button onClick={handlelogOut}>Logout</Button>
                                     </div>
                               
-                                  </div>
+                                  </div> */}
       <div>
+        {error &&
+                    <Alert>
+                        <InfoIcon />
+                        <AlertTitle>Heads up!</AlertTitle>
+                        <AlertDescription>
+                            {error}
+                        </AlertDescription>
+                        <AlertAction>
+                        </AlertAction>
+                    </Alert>}
         <Card className="w-full max-w-sm">
                 <CardHeader>
-                    <CardTitle>Login to your account</CardTitle>
+                    <CardTitle>Update Task</CardTitle>
                     <CardDescription>
-                        Create your task
+                        Update your selected Task
                     </CardDescription>
                     <CardAction>
                     </CardAction>
@@ -110,7 +120,7 @@ const Updatetask = () => {
                     <form>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Title</Label>
+                                <Label >Title</Label>
                                 <Input
                                     type="text"
                                     name='title'
@@ -122,7 +132,7 @@ const Updatetask = () => {
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Description</Label>
+                                    <Label >Description</Label>
                                 </div>
                                 <Input type="text"
                                     name='desc'
@@ -132,7 +142,7 @@ const Updatetask = () => {
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Status</Label>
+                                    <Label >Status</Label>
                                 </div>
                                 <Input type="text"
                                     name='status'
@@ -142,7 +152,7 @@ const Updatetask = () => {
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Priority</Label>
+                                    <Label >Priority</Label>
                                 </div>
                                 <Input type="text"
                                     name='priority'
@@ -156,7 +166,7 @@ const Updatetask = () => {
                 <CardFooter className="flex-col gap-2">
                     {loader && <Loading />}
                     <Button onClick = {handleSubmit} disabled={loader} type="submit" className="w-full">
-                        Login
+                        Update task
                     </Button>
                 </CardFooter>
             </Card>
