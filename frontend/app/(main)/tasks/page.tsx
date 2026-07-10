@@ -41,11 +41,27 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "recharts";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Loading from "./loading";
+import LoadingSpinner from "@/components/loading-spinner";
 
 const Tasks = () => {
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState();
+  const [priority, setPriority] = useState("");
+  const [sort, setSort] = useState("");
+  const [order, setOrder] = useState("");
+  const [loader, setLoader] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [toDeleteTask, setToDeleteTask] = useState<any>(null);
 
@@ -58,15 +74,18 @@ const Tasks = () => {
 
     const fetchTasks = async () => {
       try {
-        const res = await getTasks();
+        setLoader(true);
+        const res = await getTasks(priority, sort, order);
         setTasks(res.data);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         setError(error.message);
+      } finally {
+        setLoader(false);
       }
     };
     fetchTasks();
-  }, [router]);
+  }, [router, priority, sort, order]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const toUpdate = async (id: any) => {
@@ -87,6 +106,24 @@ const Tasks = () => {
   const toCreateTask = () => {
     router.replace("/tasks/add");
   };
+
+  const priorityItems = [
+    { label: "All priorities", value: "" },
+    { label: "Low", value: "low" },
+    { label: "Medium", value: "medium" },
+    { label: "High", value: "high" },
+  ];
+
+  const sortItems = [
+    { label: "Title", value: "title" },
+    { label: "Priority", value: "priority" },
+    { label: "Status", value: "status" },
+  ];
+
+  const orderItems = [
+    { label: "Ascending", value: "asc" },
+    { label: "Descending", value: "desc" },
+  ];
   return (
     <div>
       {error && (
@@ -106,64 +143,138 @@ const Tasks = () => {
                                           </div>
                                     
                                         </div> */}
-      <h1 className="text-2xl font-bold mb-4" >All Tasks</h1>
+      <h1 className="text-2xl font-bold mb-4">All Tasks</h1>
       <ScrollArea className="rounded-md border h-85">
+        <div className="sticky top-0 z-10 bg-background mb-5 flex gap-4">
+          <Select
+            items={priorityItems}
+            value={priority}
+            onValueChange={(value) => {
+              setPriority(value ?? "");
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Priority</SelectLabel>
+                {priorityItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            items={sortItems}
+            value={sort}
+            onValueChange={(value) => {
+              setSort(value ?? "");
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Sort</SelectLabel>
+                {sortItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            items={orderItems}
+            value={order}
+            onValueChange={(value) => {
+              setOrder(value ?? "");
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Order</SelectLabel>
+                {orderItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <Table>
-        <TableHeader className="sticky top-0 z-10 bg-background">
-          <TableRow>
-            <TableHead className="w-[100px]">Title</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Priority</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tasks.map((task: any) => (
-            <TableRow key={task._id}>
-              <TableCell className="font-medium">{task.title}</TableCell>
-              <TableCell>{task.description}</TableCell>
-              <TableCell>{task.status}</TableCell>
-              <TableCell>{task.priority}</TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger
-                    render={<Button variant="outline">⋮</Button>}
-                  />
-                  <DropdownMenuContent>
-                    <DropdownMenuGroup>
-                      <DropdownMenuLabel>Options</DropdownMenuLabel>
-
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setToDeleteTask(task);
-                        }}
-                      >
-                        Delete
-                      </DropdownMenuItem>
-
-                      <DropdownMenuItem
-                        onClick={() => {
-                          toUpdate(task._id);
-                        }}
-                      >
-                        Update
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          toTask(task._id);
-                        }}
-                      >
-                        Details
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+          <TableHeader className="sticky top-0 z-10 bg-background">
+            <TableRow>
+              <TableHead className="w-[100px]">Title</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Priority</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {loader ? (
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <LoadingSpinner />
+                </TableCell>
+              </TableRow>
+            ) : (
+              tasks.map((task: any) => (
+                <TableRow onClick={() => {
+                  toTask(task._id)
+                }} key={task._id}>
+                  <TableCell className="font-medium">{task.title}</TableCell>
+                  <TableCell>{task.description}</TableCell>
+                  <TableCell>{task.status}</TableCell>
+                  <TableCell>{task.priority}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger 
+                      onClick={(e) => e.stopPropagation()}
+                        render={
+                          <Button  onClick={(e) => e.stopPropagation()} className="cursor-pointer" variant="outline">
+                            ⋮
+                          </Button>
+                        }
+                      />
+                      <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenuGroup>
+                          <DropdownMenuLabel>Options</DropdownMenuLabel>
+
+                          <DropdownMenuItem
+                          
+                            onClick={() => {
+                              setToDeleteTask(task);
+                            }}
+                          >
+                            Delete
+                          </DropdownMenuItem>
+
+                          <DropdownMenuItem
+                            onClick={() => {
+                              toUpdate(task._id);
+                            }}
+                          >
+                            Update
+                          </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </ScrollArea>
       <AlertDialog
         open={toDeleteTask !== null}
@@ -190,8 +301,7 @@ const Tasks = () => {
               onClick={async () => {
                 await deleteTask(toDeleteTask._id);
 
-                setTasks(tasks.filter((t: any) => t._id !== toDeleteTask._id),
-                );
+                setTasks(tasks.filter((t: any) => t._id !== toDeleteTask._id));
 
                 setToDeleteTask(null);
               }}

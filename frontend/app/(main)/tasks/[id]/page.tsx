@@ -38,7 +38,7 @@ const GetTask = () => {
       }
 
       fetchBook()
-    })
+    }, [])
     const toDashboard = () => {
         router.push("/dashboard");
     };
@@ -107,7 +107,7 @@ const GetTask = () => {
 
     <Button
       variant="outline"
-      onClick={() => router.back()}
+      onClick={() => router.replace(`/tasks`)}
     >
       Back
     </Button>

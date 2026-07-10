@@ -9,7 +9,7 @@ async function registerUser(req, res){
     if(!username || !email || !password){
         throw new Error("Username  , email and password are required ")
     }
-    const isUserExists = await userModel.findOne({email : email})
+    const isUserExists = await userModel.findOne({ $or: [{ email: email }, { username: username }] })
     if(isUserExists){
         throw new Error("Username and email should be unique")
     }

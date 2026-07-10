@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils";
 
 
 const ResgiterUser = () => {
@@ -56,15 +57,16 @@ const ResgiterUser = () => {
         router.push("/dashboard");
     };
     return (
-        <div>
+       <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+         <div className="w-full max-w-sm">
             <Button onClick={toDashboard} className='text-3xl'>Dashboard</Button>
 
 
             {error &&
-                <Alert>
+                <Alert className="border-destructive text-destructive">
                     <InfoIcon />
                     <AlertTitle>Heads up!</AlertTitle>
-                    <AlertDescription>
+                    <AlertDescription className = "border-destructive text-destructive">
                         {error}
                     </AlertDescription>
                     <AlertAction>
@@ -90,6 +92,7 @@ const ResgiterUser = () => {
                             <div className="grid gap-2">
                                 <Label htmlFor="username">Username</Label>
                                 <Input
+                                    className= {cn(error.toLowerCase().includes("username") && "border-destructive text-destructive placeholder:text-destructive focus-visible:ring-destructive")}
                                     type="text"
                                     name='text'
                                     placeholder='Enter your Username'
@@ -101,6 +104,7 @@ const ResgiterUser = () => {
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
+                                    className={cn(error.toLowerCase().includes("email") && "border-destructive text-destructive placeholder:text-destructive focus-visible:ring-destructive")}
                                     type="email"
                                     name='email'
                                     placeholder='Enter your email'
@@ -113,7 +117,9 @@ const ResgiterUser = () => {
                                 <div className="flex items-center">
                                     <Label htmlFor="password">Password</Label>
                                 </div>
-                                <Input type="password"
+                                <Input
+                                    className={cn(error.toLowerCase().includes("password") && "border-destructive text-destructive placeholder:text-destructive")}
+                                    type="password"
                                     name='password'
                                     placeholder='Enter your password'
                                     value={password}
@@ -132,6 +138,7 @@ const ResgiterUser = () => {
 
 
         </div>
+       </div>
     );
 };
 

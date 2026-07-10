@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 const Updatetask = () => {
   const router = useRouter();
@@ -79,7 +80,8 @@ const Updatetask = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      setError(error.messsge);
+      console.log("data.message inside the page" , error.message)
+      setError(error.message);
     } finally {
       setLoader(false);
     }
@@ -115,7 +117,7 @@ const Updatetask = () => {
   ];
 
   return (
-    <div>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       {/* <div className=' rounded flex flex-row justify-between bg-black text-white'>
                                   <Button onClick={toDashboard} className='pt-0.5 pl-1'>Dashboard</Button>
                                     <div>
@@ -125,16 +127,17 @@ const Updatetask = () => {
                                     </div>
                               
                                   </div> */}
-      <div>
+      <div className="w-full max-w-sm" >
         {error && (
-          <Alert>
+          <Alert className="border-destructive text-destructive ">
             <InfoIcon />
             <AlertTitle>Heads up!</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription className="border-destructive text-destructive">{error}</AlertDescription>
             <AlertAction></AlertAction>
           </Alert>
         )}
         <Card className="w-full max-w-sm">
+          
           <CardHeader>
             <CardTitle>Update Task</CardTitle>
             <CardDescription>Update your selected Task</CardDescription>
@@ -146,6 +149,7 @@ const Updatetask = () => {
                 <div className="grid gap-2">
                   <Label>Title</Label>
                   <Input
+                    className= {cn(error.toLowerCase().includes("title") && "border-destructive text-destructive placeholder:text-destructive focus-visible:ring-destructive")}
                     type="text"
                     name="title"
                     placeholder="Enter your title"
@@ -161,6 +165,7 @@ const Updatetask = () => {
                     <Label>Description</Label>
                   </div>
                   <Input
+                    className={cn(error.toLowerCase().includes("description") && "border-destructive text-destructive placeholder:text-destructive focus-visible:ring-destructive")}
                     type="text"
                     name="desc"
                     placeholder="Enter your task description"
@@ -180,7 +185,7 @@ const Updatetask = () => {
                   onValueChange={(value)=>{
                     setStatus(value)
                   }}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className={error.toLowerCase().includes("status") ? "border-destructive text-destructive placeholder:text-destructive w-full" : "w-full" }>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -204,7 +209,7 @@ const Updatetask = () => {
                   onValueChange={(value)=>{
                     setPriority(value)
                   }}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className= {error.toLowerCase().includes("priority") ? "border-destructive text-destructive placeholder:text-destructive w-full" : "w-full"}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>

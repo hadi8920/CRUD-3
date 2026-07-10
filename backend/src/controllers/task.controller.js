@@ -45,6 +45,7 @@ async function createTask(req, res) {
 
 async function getAllTask(req, res) {
   console.log("--------------------------------")
+  console.log(req.query)
     const { priority, sort, order } = req.query;
     const sortObj = {};
     const filter = {};
@@ -85,6 +86,15 @@ async function updateTask(req, res) {
     console.log(id);
     console.log("--------------------");
 
+    if (!title || !description) {
+      throw new Error("Title and Description are required")
+    }
+    console.log("------------------------");
+
+    if (status !== "pending" && status !== "completed") {
+      throw new Error("You entered a status that is not defined")
+    }
+    
     const taskData = await taskModel.findOneAndUpdate(
       { _id: id },
       {

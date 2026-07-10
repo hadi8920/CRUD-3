@@ -31,6 +31,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toLowerCase } from "zod";
+import { cn } from "@/lib/utils";
+
 
 const CreateTasks = () => {
   const router = useRouter();
@@ -97,7 +100,8 @@ const CreateTasks = () => {
     { label: "High", value: "high" },
   ];
   return (
-    <div>
+    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
       {/* <div className=' rounded flex flex-row justify-between bg-black text-white'>
                             <Button onClick={toDashboard} className='pt-0.5 pl-1'>Dashboard</Button>
                               <div>
@@ -109,10 +113,10 @@ const CreateTasks = () => {
                             </div> */}
 
       {error && (
-        <Alert>
+        <Alert className="border-destructive text-destructive ">
           <InfoIcon />
           <AlertTitle>Heads up!</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription className="border-destructive text-destructive ">{error}</AlertDescription>
           <AlertAction></AlertAction>
         </Alert>
       )}
@@ -129,12 +133,14 @@ const CreateTasks = () => {
               <div className="grid gap-2">
                 <Label htmlFor="email">Title</Label>
                 <Input
+                className={cn(error?.toLowerCase().includes("title")  && "border-destructive text-destructive placeholder:text-destructive  focus-visible:ring-destructive")}
                   type="text"
                   name="title"
                   placeholder="Enter your title"
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
+                    
                   }}
                   required
                 />
@@ -144,6 +150,7 @@ const CreateTasks = () => {
                   <Label htmlFor="password">Description</Label>
                 </div>
                 <Input
+                className={cn(error.toLowerCase().includes("description") && "border-destructive text-destructive placeholder:text-destructive focus-visible:ring-destructive ")}
                   type="text"
                   name="desc"
                   placeholder="Enter your task description"
@@ -158,13 +165,14 @@ const CreateTasks = () => {
                 <div className="flex items-center">
                   <Label htmlFor="password">Status</Label>
                 </div>
-                <Select items={statusItems}
+                <Select
+                items={statusItems}
                 value = {status}
                 onValueChange={(value)=>{
                     setStatus(value)
                 }}
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className = {error.toLowerCase().includes("status") ? " border-destructive text-destructive placeholder:text-destructive w-full" : "w-full"}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -186,10 +194,10 @@ const CreateTasks = () => {
                 <Select items={priorityItems}
                 value = {priority}
                 onValueChange={(value)=>{
-                    setStatus(value)
+                    setPriority(value)
                 }}
                 >
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className= {(error.toLowerCase().includes("priority") ? " border-destructive text-destructive placeholder:text-destructive w-full" : "w-full") }>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -219,6 +227,7 @@ const CreateTasks = () => {
           </Button>
         </CardFooter>
       </Card>
+    </div>
     </div>
   );
 };
