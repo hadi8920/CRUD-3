@@ -1,9 +1,22 @@
 "use client"
 import { getTask } from '@/lib/tasks/tasks'
 import { useParams } from 'next/navigation'
-import { useRouter  } from 'next/router'
+import { useRouter  } from 'next/navigation'
 import React, { useEffect , useState } from 'react'
-import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import { Separator } from "@/components/ui/separator";
+
+import { Badge } from "@/components/ui/badge";
+
+import { Button } from "@/components/ui/button";
 
 
 const GetTask = () => {
@@ -32,11 +45,81 @@ const GetTask = () => {
   return (
     <div>
         <Button onClick={toDashboard} className="text-3xl">Dashboard</Button>
-      <h1>Task Information</h1>
-      <h2>{task.title}</h2>
-      <p>{task.description}</p>
-      <p>{task.status}</p>
-      <p>{task.priority}</p>
+      <Card className="w-full max-w-xl mx-auto">
+  <CardHeader>
+    <CardTitle>Task Details</CardTitle>
+    <CardDescription>
+      View complete information about this task.
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent className="space-y-6">
+
+    <div>
+      <h3 className="text-sm font-medium text-muted-foreground">
+        Title
+      </h3>
+
+      <p className="mt-1 text-lg font-semibold">
+        {task?.title}
+      </p>
+    </div>
+
+    <Separator />
+
+    <div>
+      <h3 className="text-sm font-medium text-muted-foreground">
+        Description
+      </h3>
+
+      <p className="mt-1">
+        {task?.description}
+      </p>
+    </div>
+
+    <Separator />
+
+    <div>
+      <h3 className="text-sm font-medium text-muted-foreground">
+        Status
+      </h3>
+
+      <Badge>
+        {task?.status}
+      </Badge>
+    </div>
+
+    <Separator />
+
+    <div>
+      <h3 className="text-sm font-medium text-muted-foreground">
+        Priority
+      </h3>
+
+      <Badge variant="secondary">
+        {task?.priority}
+      </Badge>
+    </div>
+
+  </CardContent>
+
+  <CardFooter className="flex justify-between">
+
+    <Button
+      variant="outline"
+      onClick={() => router.back()}
+    >
+      Back
+    </Button>
+
+    <Button
+      onClick={() => router.push(`/tasks/edit/${task._id}`)}
+    >
+      Edit Task
+    </Button>
+
+  </CardFooter>
+</Card>
     </div>
   )
 }
