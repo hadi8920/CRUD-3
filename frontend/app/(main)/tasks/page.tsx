@@ -115,12 +115,14 @@ const Tasks = () => {
   ];
 
   const sortItems = [
+    { label: "No priority", value: "" },
     { label: "Title", value: "title" },
     { label: "Priority", value: "priority" },
     { label: "Status", value: "status" },
   ];
 
   const orderItems = [
+    { label: "No Order", value: "" },
     { label: "Ascending", value: "asc" },
     { label: "Descending", value: "desc" },
   ];
@@ -251,6 +253,7 @@ const Tasks = () => {
                           <DropdownMenuLabel>Options</DropdownMenuLabel>
 
                           <DropdownMenuItem
+                            variant = "destructive"
                           
                             onClick={() => {
                               setToDeleteTask(task);
@@ -291,13 +294,13 @@ const Tasks = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account from our servers.
+              This action cannot be undone. This will permanently delete the task.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
+              variant = "destructive"
               onClick={async () => {
                 await deleteTask(toDeleteTask._id);
 
@@ -306,7 +309,7 @@ const Tasks = () => {
                 setToDeleteTask(null);
               }}
             >
-              Continue
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

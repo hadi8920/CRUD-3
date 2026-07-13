@@ -2,7 +2,7 @@
 import { loginUser } from '@/lib/auth/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import Loading from './loading'
 import {
     Alert,
@@ -36,6 +36,13 @@ const LoginUser = () => {
     const [loader, setLoader] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState('')
+
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        if(token){
+            router.replace("/dashboard")
+        }
+    } ,[router])
 
     const handleSubmit = async (e: React.FormEvent) => {
         try {

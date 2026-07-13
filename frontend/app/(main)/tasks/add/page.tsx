@@ -57,7 +57,6 @@ const CreateTasks = () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setError(error.message);
-    } finally {
       setLoader(false);
     }
   };
@@ -68,7 +67,7 @@ const CreateTasks = () => {
       router.replace("/login");
       return;
     }
-  });
+  }, [router]);
   const toDashboard = () => {
     router.push("/dashboard");
   };

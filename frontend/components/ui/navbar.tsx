@@ -1,5 +1,6 @@
+"use client"
 import React from 'react'
-
+import { usePathname } from "next/navigation";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,10 +16,20 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {Bell} from 'lucide-react'
+import {Bell, Edit} from 'lucide-react'
 
 
 const navbar = () => {
+  const pathname = usePathname()
+  const segments = pathname.split("/").filter(Boolean)
+  const breadcrumbsNames = {
+    dashboard : "Dashboard",
+    tasks : "All Tasks",
+    add : "Create Task",
+    edit : "Edit Task",
+
+  }
+
   return (
     <div className="flex flex-row justify-between">
       <div className="flex flex-row gap-1.5">
@@ -26,12 +37,28 @@ const navbar = () => {
       <Breadcrumb className="p-1">
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink href="#">Task Manager</BreadcrumbLink>
+            <BreadcrumbLink href="/">Task Manager</BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator className="hidden md:block" />
+          {segments.map((segment , index) => {
+            let text= segment
+            if(segment.length === 24){
+              if(segments[index-1] === 'edit'){
+                text = "Edit"
+              }else{
+                text = "Details"
+              }
+            }
+            return(
+              <React.Fragment key={segment}>
+              <BreadcrumbSeparator className="hidden md:block" />
           <BreadcrumbItem>
-            <BreadcrumbPage>Dashboard</BreadcrumbPage>
+            <BreadcrumbLink>{breadcrumbsNames[text] ?? text}</BreadcrumbLink>
           </BreadcrumbItem>
+            </React.Fragment>
+            )
+            
+          })}
+          
         </BreadcrumbList>
       </Breadcrumb>
       </div>

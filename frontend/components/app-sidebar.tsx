@@ -1,71 +1,188 @@
+"use client"
+
 import * as React from "react"
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
+import { NavMain } from "@/components/nav-main"
+import { NavProjects } from "@/components/nav-projects"
+import { NavUser } from "@/components/nav-user"
+import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
 
 // This is sample data.
 const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  teams: [
+    {
+      name: "Acme Inc",
+      logo: (
+        <GalleryVerticalEndIcon
+        />
+      ),
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: (
+        <AudioLinesIcon
+        />
+      ),
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: (
+        <TerminalIcon
+        />
+      ),
+      plan: "Free",
+    },
+  ],
   navMain: [
     {
-      title: "Tasks",
-      url: "/tasks",
+      title: "About Tasks",
+      icon: (
+        <TerminalSquareIcon
+        />
+      ),
+      isActive: true,
       items: [
         {
           title: "All Tasks",
           url: "/tasks",
         },
         {
-          title: "Create Task",
+          title: "Create a Task",
           url: "/tasks/add",
         },
       ],
     },
+    {
+      title: "Models",
+      url: "#",
+      icon: (
+        <BotIcon
+        />
+      ),
+      items: [
+        {
+          title: "Genesis",
+          url: "#",
+        },
+        {
+          title: "Explorer",
+          url: "#",
+        },
+        {
+          title: "Quantum",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Documentation",
+      url: "#",
+      icon: (
+        <BookOpenIcon
+        />
+      ),
+      items: [
+        {
+          title: "Introduction",
+          url: "#",
+        },
+        {
+          title: "Get Started",
+          url: "#",
+        },
+        {
+          title: "Tutorials",
+          url: "#",
+        },
+        {
+          title: "Changelog",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "#",
+      icon: (
+        <Settings2Icon
+        />
+      ),
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+    },
+  ],
+  projects: [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: (
+        <FrameIcon
+        />
+      ),
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: (
+        <PieChartIcon
+        />
+      ),
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: (
+        <MapIcon
+        />
+      ),
+    },
   ],
 }
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-        <SearchForm />
+        <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      // isActive={item.isActive}
-                      render={<a href={item.url} />}
-                    >
-                      {item.title}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        <NavMain items={data.navMain} />
+        <NavProjects projects={data.projects} />
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

@@ -34,6 +34,13 @@ const ResgiterUser = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        if(token){
+            router.replace("/dashboard")
+        }
+    })
+
     const handleSubmit = async (e: React.FormEvent) => {
         try {
             e.preventDefault();
